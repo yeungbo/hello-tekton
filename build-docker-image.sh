@@ -50,8 +50,8 @@ IMAGE_TAG=${BUILD_NUMBER}-${IMAGE_TAG}
 if [ ! -z "${GIT_BRANCH}" ]; then IMAGE_TAG=${GIT_BRANCH}-${IMAGE_TAG} ; fi
 echo "=========================================================="
 echo -e "BUILDING CONTAINER IMAGE: ${IMAGE_NAME}:${IMAGE_TAG}"
-if [ -z "${DOCKER_ROOT}" ]; then DOCKER_ROOT=. ; fi
-if [ -z "${DOCKER_FILE}" ]; then DOCKER_FILE=${DOCKER_ROOT}/Dockerfile ; fi
+if [ -z "${DOCKER_ROOT}" ]; then DOCKER_ROOT=. ; cat app.js ; fi
+if [ -z "${DOCKER_FILE}" ]; then DOCKER_FILE=${DOCKER_ROOT}/Dockerfile ; cat ${DOCKER_ROOT}/app.js ; fi
 set -x
 bx cr build -t ${REGISTRY_URL}/${REGISTRY_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} ${DOCKER_ROOT} -f ${DOCKER_FILE}
 set +x
