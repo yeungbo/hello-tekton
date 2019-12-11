@@ -13,7 +13,7 @@
 #   limitations under the License.
 
 FROM node:alpine
-LABEL maintainer="philippe_mulet@fr.ibm.com"
+LABEL maintainer="yangbbo@cn.ibm.com"
 
 RUN apk update && apk upgrade
 
