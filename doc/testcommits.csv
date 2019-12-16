@@ -1,0 +1,44 @@
+﻿hashcode,commit message
+9871417fb74dca48ea1dc85ae666a6529d113ff8,"Fix memory leak from zero-length DTLS fragments.
+
+The |pqueue_insert| function can fail if one attempts to insert a
+duplicate sequence number. When handling a fragment of an out of
+sequence message, |dtls1_process_out_of_seq_message| would not call
+|dtls1_reassemble_fragment| if the fragment's length was zero. It would
+then allocate a fresh fragment and attempt to insert it, but ignore the
+return value, leaking the fragment.
+
+This allows an attacker to exhaust the memory of a DTLS peer.
+
+Fixes CVE-2014-3507
+
+Reviewed-by: Matt Caswell <matt@openssl.org>
+Reviewed-by: Emilia K盲sper <emilia@openssl.org>
+"
+c01618dd822cc724c05eeb52455874ad068ec6a5,"Fix OID handling:
+
+- Upon parsing, reject OIDs with invalid base-128 encoding.
+- Always NUL-terminate the destination buffer in OBJ_obj2txt printing function.
+
+CVE-2014-3508
+
+Reviewed-by: Dr. Stephen Henson <steve@openssl.org>
+Reviewed-by: Kurt Roeckx <kurt@openssl.org>
+Reviewed-by: Tim Hudson <tjh@openssl.org>
+"
+1b7024fb69161619855d86b80ae0681ea802e245,"Avoid double free when processing DTLS packets.
+
+The |item| variable, in both of these cases, may contain a pointer to a
+|pitem| structure within |s->d1->buffered_messages|. It was being freed
+in the error case while still being in |buffered_messages|. When the
+error later caused the |SSL*| to be destroyed, the item would be double
+freed.
+
+Thanks to Wah-Teh Chang for spotting that the fix in 1632ef74 was
+inconsistent with the other error paths (but correct).
+
+Fixes CVE-2014-3505
+
+Reviewed-by: Matt Caswell <matt@openssl.org>
+Reviewed-by: Emilia K盲sper <emilia@openssl.org>
+"
